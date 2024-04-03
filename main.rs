@@ -12,10 +12,21 @@ fn main() {
     #[derive(Builder)]
     pub struct Command {
         executable: String,
+        #[builder(each = "arg")]
         args: Vec<String>,
+        #[builder(each = "env")]
         env: Vec<String>,
-        current_dir: String,
+        current_dir: Option<String>,
     }
 
-    let _builder = Command::builder();
+    let command = Command::builder()
+        .executable("cargo".to_owned())
+        .arg("build".to_owned())
+        .arg("--release".to_owned())
+        .build()
+        .unwrap();
+
+    assert!(command.current_dir.is_none());
+
+    assert_eq!(command.executable, "cargo");
 }
