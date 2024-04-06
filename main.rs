@@ -29,4 +29,7 @@ fn main() {
     assert!(command.current_dir.is_none());
 
     assert_eq!(command.executable, "cargo");
+
+    #[derive(Builder)]
+    struct Nope(u32);
 }
