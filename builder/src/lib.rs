@@ -1,8 +1,10 @@
-use proc_macro::TokenStream;
+mod builder;
 
-#[proc_macro_derive(Builder)]
-pub fn derive(input: TokenStream) -> TokenStream {
-    let _ = input;
+#[proc_macro_derive(Builder, attributes(builder))]
+pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let input = syn::parse_macro_input!(input as syn::DeriveInput);
 
-    unimplemented!()
+    builder::expand(input)
+        .unwrap_or_else(syn::Error::into_compile_error)
+        .into()
 }
